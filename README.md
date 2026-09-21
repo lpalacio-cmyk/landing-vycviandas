@@ -79,7 +79,7 @@ npm run build   # build de producción
 npm start       # servir el build
 ```
 
-Requiere Node 18.18 o superior.
+Requiere Node 20.9 o superior (Next.js 16).
 
 ---
 
