@@ -26,6 +26,10 @@ export function Entrega() {
                 <dd className="entrega__valor">{entrega.retiro.ciudad}</dd>
               </div>
               <div className="entrega__fila">
+                <dt className="entrega__label">Días</dt>
+                <dd className="entrega__valor">{entrega.retiro.dias}</dd>
+              </div>
+              <div className="entrega__fila">
                 <dt className="entrega__label">Horario</dt>
                 <dd className="entrega__valor num">{entrega.retiro.horario}</dd>
               </div>
@@ -42,6 +46,10 @@ export function Entrega() {
               <div className="entrega__fila">
                 <dt className="entrega__label">Zona</dt>
                 <dd className="entrega__valor">{entrega.reparto.zona}</dd>
+              </div>
+              <div className="entrega__fila">
+                <dt className="entrega__label">Días</dt>
+                <dd className="entrega__valor">{entrega.reparto.dias}</dd>
               </div>
               <div className="entrega__fila">
                 <dt className="entrega__label">Horario</dt>
@@ -64,6 +72,11 @@ export function Entrega() {
             <p className="entrega__nota">{entrega.reparto.nota}</p>
           </article>
         </div>
+
+        <aside className="aviso">
+          <p className="aviso__titulo">{entrega.aviso.titulo}</p>
+          <p className="aviso__texto">{entrega.aviso.texto}</p>
+        </aside>
       </div>
     </section>
   );

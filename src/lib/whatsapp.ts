@@ -12,7 +12,7 @@ export function wa(mensaje: string): string {
 export const mensajes = {
   general: "¡Hola V&C! Vi la página y quiero pedir una vianda. ¿Cuál es el plato de hoy?",
   plan: (nombre: string) =>
-    `¡Hola V&C! Vi la página y me interesa el ${nombre}. ¿Me pasan los detalles?`,
+    `¡Hola V&C! Vi la página y me interesa el ${nombre}. ¿Me pasan el precio y los detalles?`,
   empresas:
     "¡Hola V&C! Vi la página y quiero una propuesta de viandas para mi equipo de trabajo. Somos aproximadamente ",
   duda: "¡Hola V&C! Vi la página y me quedó una duda: ",

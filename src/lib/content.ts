@@ -25,10 +25,16 @@ export interface Plato {
 export interface Plan {
   id: string;
   nombre: string;
-  /** Texto de la unidad: "por vianda", "por semana", "por mes". */
-  unidad: string;
-  /** Precio en pesos, sin puntos ni símbolo. PENDIENTE en todos los planes. */
-  precio: number;
+  /** Cadencia del plan, en el renglón chico bajo el nombre.
+   *  Por ejemplo: "Por mes · de lunes a viernes". */
+  cadencia: string;
+  /** Precio en pesos, sin puntos ni símbolo.
+   *
+   *  OPCIONAL A PROPÓSITO. Hoy ningún plan lo tiene, así que la tarjeta
+   *  muestra "Precio por WhatsApp" en su lugar. Si algún día se quieren
+   *  publicar los precios, se agrega este campo y la tarjeta lo muestra
+   *  sola, sin tocar nada más. */
+  precio?: number;
   descripcion: string;
   destacado?: boolean;
   incluye: string[];
@@ -57,7 +63,13 @@ export const negocio = {
   desde: 2024,
   /** Cambiar por el dominio definitivo después del deploy en Vercel. */
   dominio: "https://vycviandas.vercel.app",
-  /** PENDIENTE: confirmar días y horarios de atención. */
+  /** Días que trabajan. Confirmado por la clienta. */
+  diasTrabajo: "Lunes a viernes",
+  /** El detalle de los feriados, que es la duda que más les deben hacer. */
+  feriados:
+    "Trabajamos los feriados provinciales y días no laborables. Los feriados nacionales no.",
+  /** PENDIENTE: confirmar el horario de atención. Se usa en el pie y en los
+   *  datos estructurados que lee Google. */
   horarios: "Lunes a viernes, 9 a 20 h",
 } as const;
 
@@ -96,13 +108,13 @@ export const hero = {
   titulo: "Plato principal, postre y pan.",
   tituloDestacado: "Todo casero, todo incluido.",
   texto:
-    "Cocinamos todos los días en Catamarca Capital y armamos viandas completas para que no tengas que pensar en el almuerzo. Pedís por WhatsApp y las retirás o te las llevamos.",
+    "Cocina casera y liviana, sin aceites ni condimentos fuertes. Armamos viandas completas en Catamarca Capital para que no tengas que pensar en el almuerzo. Pedís por WhatsApp y las retirás o te las llevamos.",
   ctaPrimario: "Pedir por WhatsApp",
   ctaSecundario: "Ver los platos",
   datos: [
     { valor: "3 en 1", label: "principal, postre y pan" },
+    { valor: "Liviana", label: "sin aceites ni condimentos fuertes" },
     { valor: "Del día", label: "cocinado, no recalentado" },
-    { valor: "Mensual", label: "abono, pack o suelta" },
   ],
 };
 
@@ -131,7 +143,7 @@ export const platos: Plato[] = [
   {
     nombre: "Chop suey de cerdo con arroz",
     descripcion:
-      "Cerdo salteado con verduras crocantes y arroz. Liviano pero con sustancia.",
+      "Cerdo con verduras y arroz. Liviano, pero con sustancia.",
     etiquetas: ["Casero", "Abundante"],
     foto: "/images/chop-suey.jpg",
   },
@@ -154,25 +166,23 @@ export const planes: Plan[] = [
   {
     id: "suelta",
     nombre: "Vianda suelta",
-    unidad: "por vianda",
-    precio: 6500,
+    cadencia: "Cuando la necesites",
     descripcion: "Para probar, o para el día que no llegás a cocinar.",
     incluye: [
       "Plato principal, postre y pan",
-      "Pedís hasta las 10 h del mismo día",
+      "Sin compromiso ni permanencia",
       "Retirás o te la llevamos",
     ],
   },
   {
     id: "mensual",
     nombre: "Abono mensual",
-    unidad: "por mes · 20 viandas",
-    precio: 110000,
+    cadencia: "Por mes · de lunes a viernes",
     descripcion:
-      "Una vianda por día hábil, todo el mes. Es la forma más conveniente.",
+      "Una vianda por cada día que trabajamos, todo el mes. Es la forma más conveniente.",
     destacado: true,
     incluye: [
-      "20 viandas, de lunes a viernes",
+      "Una vianda por día hábil",
       "El mejor precio por vianda",
       "Avisás con un día si no vas a querer alguna",
       "Entrega sin cargo en Catamarca Capital",
@@ -181,11 +191,10 @@ export const planes: Plan[] = [
   {
     id: "semanal",
     nombre: "Pack semanal",
-    unidad: "por semana · 5 viandas",
-    precio: 30000,
+    cadencia: "Por semana · de lunes a viernes",
     descripcion: "Los cinco almuerzos de la semana, resueltos de una.",
     incluye: [
-      "5 viandas, de lunes a viernes",
+      "Los cinco días de la semana",
       "Elegís los días que querés",
       "Ideal antes de pasar al abono",
     ],
@@ -197,7 +206,9 @@ export const planesSeccion = {
   titulo: "Cuanto más seguido, más barata te sale",
   bajada:
     "Podés arrancar con una vianda suelta y pasarte al abono cuando quieras. No hay permanencia ni contrato.",
-  nota: "Los precios se confirman por WhatsApp al hacer el pedido.",
+  /** Texto que aparece en cada tarjeta en lugar del precio. */
+  notaPrecio: "Precio por WhatsApp",
+  nota: "Los precios cambian seguido, así que no los publicamos acá: te los pasamos actualizados por WhatsApp en el momento.",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -233,6 +244,11 @@ export const pasosSeccion = {
 /* -------------------------------------------------------------------------- */
 
 export const diferenciales = [
+  {
+    titulo: "Sin aceites ni condimentos fuertes",
+    texto:
+      "Cocinamos sin aceites, sin aderezos y sin condimentos fuertes. Cae liviano, y sirve si tenés que cuidar la digestión o la presión.",
+  },
   {
     titulo: "El postre va incluido",
     texto:
@@ -281,6 +297,7 @@ export const entrega = {
     titulo: "Retiro por el local",
     direccion: "Psj. Exequiel Soria 130",
     ciudad: "Catamarca Capital",
+    dias: "Lunes a viernes",
     /** PENDIENTE: confirmar horario real de retiro. */
     horario: "De 11:30 a 14 h",
     nota: "Sin cargo.",
@@ -289,8 +306,16 @@ export const entrega = {
     titulo: "Te la llevamos",
     /** PENDIENTE: confirmar zonas de reparto y costo del envío. */
     zona: "Catamarca Capital y alrededores",
+    dias: "Lunes a viernes",
     horario: "Entre 11:30 y 14 h",
     nota: "Sin cargo con el abono mensual. Consultanos por tu zona.",
+  },
+  /** Los feriados son la consulta que más se repite: va a la vista, no
+   *  escondida en las preguntas frecuentes. */
+  aviso: {
+    titulo: "Feriados",
+    texto:
+      "Trabajamos los feriados provinciales y los días no laborables de Catamarca. Los feriados nacionales no abrimos.",
   },
 };
 
@@ -354,6 +379,21 @@ export const faqs = [
     pregunta: "¿Puedo retirarla o me la llevan?",
     respuesta:
       "Las dos cosas. Podés retirarla por Psj. Exequiel Soria 130, en Catamarca Capital, o te la llevamos al mediodía. Con el abono mensual la entrega es sin cargo.",
+  },
+  {
+    pregunta: "¿Llevan aceite o condimentos fuertes?",
+    respuesta:
+      "No. Cocinamos sin aceites, sin aderezos y sin condimentos fuertes. Por eso las viandas caen livianas y funcionan bien si estás cuidando la digestión, la presión o venís de una cirugía.",
+  },
+  {
+    pregunta: "¿Trabajan los feriados?",
+    respuesta:
+      "Trabajamos de lunes a viernes, incluidos los feriados provinciales y los días no laborables de Catamarca. Los feriados nacionales no abrimos.",
+  },
+  {
+    pregunta: "¿Cuánto sale?",
+    respuesta:
+      "Los precios cambian seguido, así que preferimos no publicarlos acá y que no te encuentres con un número viejo. Escribinos por WhatsApp y te pasamos el precio actualizado del día, sin compromiso.",
   },
   {
     pregunta: "¿Cómo se paga?",

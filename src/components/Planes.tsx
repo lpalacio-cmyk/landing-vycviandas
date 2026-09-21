@@ -19,12 +19,9 @@ export function Planes() {
               key={plan.id}
             >
               <p className="plan__marca">{plan.destacado ? "El más elegido" : ""}</p>
-              <h3 className="plan__nombre">{plan.nombre}</h3>
 
-              <p className="plan__precio">
-                <span className="plan__precio-num">{precio(plan.precio)}</span>
-                <span className="plan__precio-unit">{plan.unidad}</span>
-              </p>
+              <h3 className="plan__nombre">{plan.nombre}</h3>
+              <p className="plan__cadencia">{plan.cadencia}</p>
 
               <p className="plan__desc">{plan.descripcion}</p>
 
@@ -37,7 +34,18 @@ export function Planes() {
                 ))}
               </ul>
 
-              <p className="plan__accion">
+              <div className="plan__accion">
+                {/* Los precios no se publican: cambian demasiado seguido como
+                    para que un número viejo quede dando vueltas en la página.
+                    Si algún día se cargan en content.ts, se muestran acá. */}
+                {typeof plan.precio === "number" ? (
+                  <p className="plan__precio">
+                    <span className="plan__precio-num">{precio(plan.precio)}</span>
+                  </p>
+                ) : (
+                  <p className="plan__precio-nota">{planesSeccion.notaPrecio}</p>
+                )}
+
                 <a
                   className={`btn btn--bloque ${plan.destacado ? "btn--primario" : "btn--linea"}`}
                   href={wa(mensajes.plan(plan.nombre))}
@@ -45,9 +53,9 @@ export function Planes() {
                   rel="noopener noreferrer"
                 >
                   <IconoWhatsapp />
-                  Pedir este plan
+                  Consultar precio
                 </a>
-              </p>
+              </div>
             </li>
           ))}
         </ul>

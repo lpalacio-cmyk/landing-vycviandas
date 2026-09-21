@@ -27,7 +27,7 @@ la página se edita ese archivo, se guarda y se commitea: Vercel redeploya solo.
 | Qué querés cambiar | Dónde |
 |---|---|
 | Agregar o sacar un plato | `platos` |
-| Precios de los planes | `planes` |
+| Planes (y sus precios, si algún día se publican) | `planes` |
 | Teléfono, dirección, horarios | `negocio` |
 | Zonas y horarios de entrega | `entrega` |
 | Preguntas frecuentes | `faqs` |
@@ -108,7 +108,7 @@ compartir el link.
 |---|---|
 | Hero | La promesa del perfil (plato principal, postre y pan) como objeto central |
 | Platos | Repertorio real, con foto o bloque tipográfico |
-| Planes | Vianda suelta, pack semanal y abono mensual |
+| Planes | Vianda suelta, pack semanal y abono mensual. Sin precios: se consultan por WhatsApp |
 | Cómo funciona | Los cuatro pasos del pedido |
 | Por qué V&C | Diferenciales |
 | Entrega | Retiro por el local y reparto |
@@ -121,6 +121,10 @@ compartir el link.
 - **Cada botón manda un mensaje de WhatsApp distinto.** El que sale de la
   tarjeta del abono mensual dice que es por el abono mensual. Así el pedido
   llega con contexto y no hay que preguntar de dónde viene.
+- **Los precios no se publican.** Cambian seguido, y un número viejo en la web
+  hace más daño que no tener número. Cada plan muestra "Precio por WhatsApp".
+  El campo `precio` existe igual: si se agrega a un plan en `content.ts`, la
+  tarjeta lo muestra sola, sin tocar ningún componente.
 - **Datos estructurados (JSON-LD).** Es lo que hace que Google pueda mostrar
   teléfono, dirección y horarios en el resultado de búsqueda.
 - **Imagen de Open Graph.** Cuando se comparte el link por WhatsApp o

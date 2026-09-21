@@ -4,8 +4,7 @@ La landing está armada y se puede mostrar como demo tal cual está. Pero hay
 datos que se dedujeron del perfil de Instagram o que se pusieron de muestra
 para poder maquetar, y **hay que confirmarlos con la clienta antes de publicar**.
 
-Están ordenados por urgencia. Lo de la primera tabla no puede salir a producción
-sin revisar.
+Están ordenados por urgencia.
 
 ---
 
@@ -13,33 +12,82 @@ sin revisar.
 
 | Dato | Qué hay ahora | Dónde se cambia |
 |---|---|---|
-| **Precio de la vianda suelta** | `$ 6.500` (de muestra) | `content.ts` → `planes` |
-| **Precio del abono mensual** | `$ 110.000` por 20 viandas (de muestra) | `content.ts` → `planes` |
-| **Precio del pack semanal** | `$ 30.000` por 5 viandas (de muestra) | `content.ts` → `planes` |
-| **Cantidad de viandas de cada plan** | 20 mensual / 5 semanal (supuesto) | `content.ts` → `planes` |
 | **Horario de retiro** | `De 11:30 a 14 h` (supuesto) | `content.ts` → `entrega.retiro` |
 | **Horario de reparto** | `Entre 11:30 y 14 h` (supuesto) | `content.ts` → `entrega.reparto` |
+| **Horario de atención** | `Lunes a viernes, 9 a 20 h` (supuesto) — se usa en los datos estructurados que lee Google | `content.ts` → `negocio.horarios` |
 | **Zonas de reparto y costo del envío** | "Catamarca Capital y alrededores", sin costo definido | `content.ts` → `entrega.reparto` |
-| **Hora de cierre de pedidos** | "hasta las 10 h del mismo día" (supuesto) | `content.ts` → `faqs` y `planes` |
-
-Si algún precio todavía no está definido, conviene sacar el número y dejar el
-plan sin precio antes que publicar uno equivocado.
+| **Hora de cierre de pedidos** | "hasta las 10 h del mismo día" (supuesto) | `content.ts` → `faqs` |
 
 ---
 
-## 2. Confirmar — mejora la página pero no la rompe
+## 2. Revisar — una contradicción posible
+
+La clienta confirmó que **las viandas son sin aceites, sin aderezos y sin
+condimentos fuertes**. Eso ahora se comunica fuerte en tres lugares: el dato
+del hero, el primer diferencial y una pregunta frecuente.
+
+Hay que chequear que los platos del repertorio no lo contradigan. Dos casos:
+
+- **Pan de carne con fideos al pesto.** El pesto tradicional lleva bastante
+  aceite de oliva. Si lo hacen de otra forma, conviene aclararlo; si no,
+  quizá no sea el plato para mostrar como ejemplo.
+- **Chop suey.** Ya saqué la palabra "salteado" de la descripción por el mismo
+  motivo.
+
+Si un cliente con gastritis o hipertensión pide confiando en el "sin aceites"
+y el plato lleva, el problema es serio. Vale la pena la confirmación.
+
+---
+
+## 3. Confirmar — mejora la página pero no la rompe
 
 | Dato | Qué hay ahora |
 |---|---|
-| Horarios de atención | `Lunes a viernes, 9 a 20 h` (supuesto) — se usa en el pie y en los datos estructurados de Google |
 | Año de inicio | `2024`, estimado a partir del post más viejo del perfil |
 | ¿Hacen viandas para empresas? | La sección está armada y asume que sí. Si no les interesa, se borra el bloque `empresas` y la sección desaparece sola |
-| ¿Hay opciones sin TACC, vegetarianas o sin sal? | La FAQ dice que se adaptan a pedido. Confirmar hasta dónde llegan |
+| ¿Hay opciones vegetarianas o sin TACC? | La FAQ dice que se adaptan a pedido. Confirmar hasta dónde llegan |
 | ¿El abono se puede pausar? | La FAQ dice que sí avisando con un día. Confirmar |
+| Cantidad de viandas del abono | Ya no se publica un número: la tarjeta dice "una vianda por día hábil", que es cierto sin importar cuántos días tenga el mes |
+
+### Ya confirmado por la clienta
+
+- Sin aceites, sin aderezos y sin condimentos fuertes.
+- Trabajan de lunes a viernes, incluidos feriados provinciales y días no
+  laborables. Los feriados nacionales no.
+- Plato principal, postre y pan incluidos.
+- Efectivo o transferencia.
 
 ---
 
-## 3. Fotos
+## 4. Precios
+
+**Los precios no se publican en la página**, por decisión tomada: cambian
+seguido y un número viejo en la web hace más daño que no tener número.
+
+Cada tarjeta de plan muestra "Precio por WhatsApp" y el botón dice
+"Consultar precio". La nota al pie de la sección lo explica sin que suene a
+excusa: *"Los precios cambian seguido, así que no los publicamos acá: te los
+pasamos actualizados por WhatsApp en el momento."*
+
+**Si más adelante quieren publicarlos**, el campo ya está preparado. Alcanza
+con agregar `precio` al plan en `content.ts`:
+
+```ts
+{
+  id: "mensual",
+  nombre: "Abono mensual",
+  cadencia: "Por mes · de lunes a viernes",
+  precio: 110000,   // ← agregando esto, la tarjeta lo muestra sola
+  ...
+}
+```
+
+No hay que tocar ningún componente: la tarjeta detecta el campo y reemplaza
+"Precio por WhatsApp" por el número.
+
+---
+
+## 5. Fotos
 
 La página funciona sin fotos: dibuja un bloque tipográfico con trama en lugar
 de una imagen rota. Pero con fotos reales vende bastante más.
@@ -61,7 +109,7 @@ las formas y los colores de la marca.
 
 ---
 
-## 4. Testimonios
+## 6. Testimonios
 
 La sección de testimonios **está vacía a propósito** y no se renderiza.
 
@@ -85,7 +133,7 @@ La sección aparece sola apenas haya uno cargado.
 
 ---
 
-## 5. Después del deploy
+## 7. Después del deploy
 
 - [ ] Cambiar `negocio.dominio` en `content.ts` por el dominio real de Vercel
       (o el dominio propio, si compran uno).

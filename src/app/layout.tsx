@@ -28,7 +28,7 @@ const dmMono = DM_Mono({
 
 const titulo = `${negocio.nombre} — Viandas caseras en ${negocio.ciudadCorta}`;
 const descripcion =
-  "Viandas caseras con plato principal, postre y pan incluidos. Abono mensual, pack semanal o vianda suelta. Retirás por el local o te la llevamos en Catamarca Capital. Pedidos por WhatsApp.";
+  "Viandas caseras en Catamarca Capital, cocinadas sin aceites ni condimentos fuertes. Plato principal, postre y pan incluidos. Abono mensual, pack semanal o vianda suelta. Retirás por el local o te la llevamos. Pedidos por WhatsApp.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(negocio.dominio),
@@ -45,6 +45,10 @@ export const metadata: Metadata = {
     "viandas mensuales",
     "delivery comida casera Catamarca",
     "viandas para empresas Catamarca",
+    "comida liviana Catamarca",
+    "viandas sin aceite",
+    "viandas sin condimentos",
+    "comida para dieta blanda Catamarca",
   ],
   authors: [{ name: negocio.nombre }],
   alternates: { canonical: "/" },
@@ -92,7 +96,7 @@ const datosEstructurados = {
   description: descripcion,
   url: negocio.dominio,
   telephone: `+${negocio.whatsapp}`,
-  servesCuisine: "Comida casera argentina",
+  servesCuisine: "Comida casera argentina, cocina liviana sin aceites",
   priceRange: "$$",
   currenciesAccepted: "ARS",
   paymentAccepted: "Efectivo, Transferencia bancaria",

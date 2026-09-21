@@ -56,7 +56,7 @@ export function Pie() {
         <p>
           © {anio} {negocio.nombre}
         </p>
-        <p>Efectivo o transferencia · {negocio.horarios}</p>
+        <p>Efectivo o transferencia · {negocio.diasTrabajo}</p>
       </div>
     </footer>
   );
